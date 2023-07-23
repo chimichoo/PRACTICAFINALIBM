@@ -1,0 +1,55 @@
+import unittest
+import random
+def generar_matriz(N):
+ matriz = []
+ for i in range(N):
+ fila = []
+ for j in range(N):
+ fila.append(random.randint(0, 9))
+ matriz.append(fila)
+ return matriz
+def imprimir_matriz(matriz):
+ for fila in matriz:
+ print(fila)
+def calcular_sumas(matriz):
+ sumas_filas = []
+ sumas_columnas = [0] * len(matriz)
+ for fila in matriz:
+ suma_fila = sum(fila)
+ sumas_filas.append(suma_fila)
+ for j, elemento in enumerate(fila):
+ sumas_columnas[j] += elemento
+ return sumas_filas, sumas_columnas
+def imprimir_sumas(sumas_filas, sumas_columnas):
+ print("Suma de filas:", sumas_filas)
+ print("Suma de columnas:", sumas_columnas)
+def main():
+ while True:
+ try:
+ N = int(input("Ingrese el tamaño de la matriz: "))
+ if N <= 0:
+ raise ValueError
+ break
+ except ValueError:
+ print("Por favor, ingrese un número entero positivo.")
+ matriz = generar_matriz(N)
+ imprimir_matriz(matriz)
+ sumas_filas, sumas_columnas = calcular_sumas(matriz)
+ imprimir_sumas(sumas_filas, sumas_columnas)
+class TestGenerarMatriz(unittest.TestCase):
+ def test_generar_matriz(self):
+ N = 4
+ matriz = generar_matriz(N)
+ self.assertEqual(len(matriz), N)
+ for fila in matriz:
+ self.assertEqual(len(fila), N)
+ for elemento in fila:
+ self.assertTrue(0 <= elemento <= 9)
+class TestCalcularSumas(unittest.TestCase):
+ def test_calcular_sumas(self):
+ matriz = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+ sumas_filas, sumas_columnas = calcular_sumas(matriz)
+ self.assertEqual(sumas_filas, [6, 15, 24])
+ self.assertEqual(sumas_columnas, [12, 15, 18])
+if __name__ == "__main__":
+ main()
